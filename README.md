@@ -1,16 +1,41 @@
-# 狗头军师 · Goutoujunshi
+<!-- README_SYNC: source=working-tree; updated=2026-08-25 -->
 
-**简体中文** | [English](README_EN.md)
+<p align="center">
+  <a href="https://github.com/powerycy/shengjidaguai">
+    <img src="https://raw.githubusercontent.com/powerycy/shengjidaguai/main/assets/logo.png" width="160" alt="升级打怪开源社区 Logo">
+  </a>
+</p>
 
-> 把情绪支持、关系科学与可执行策略，装进一个真正站在用户一边的 AI 恋爱军师。
+<p align="center">
+  本项目由 <a href="https://github.com/powerycy/shengjidaguai"><strong>升级打怪开源社区</strong></a> 维护。欢迎访问社区仓库，参与交流与共建。
+</p>
 
-[![GitHub Stars](https://img.shields.io/github/stars/powerycy/goutoujunshi?style=social)](https://github.com/powerycy/goutoujunshi/stargazers)
+<p align="center">
+  <strong>简体中文</strong> · <a href="./README_EN.md">English</a>
+</p>
 
-本项目由 [升级打怪开源社区](https://github.com/powerycy/shengjidaguai) 维护。欢迎访问社区仓库，参与交流与共建。
+<h1 align="center">狗头军师 · Goutoujunshi</h1>
 
-如果它让你在感情里少一次内耗、多一次清醒，欢迎点亮一个🌟 **Star**。你的支持会让更多正在关系里犹豫的人找到它，也会推动知识库继续更新。
+<p align="center">
+  <strong>不只替你回消息，更帮你看清关系、判断局势、决定下一步。</strong>
+</p>
 
-很多恋爱建议只有两个答案：“勇敢去追”或“赶紧分手”。狗头军师试图做得更认真一点：先接住用户的情绪，再把事实、猜测和未知拆开；既分析心动，也计算现实、互惠、风险、机会成本和长期选择权；最后给出可以真正执行的下一步。
+<p align="center">
+  面向心动、暧昧、追求、冲突、分手与复合的 AI 恋爱军师，<br>
+  结合情绪支持、关系科学、聊天记录分析和长期记忆，把复杂关系变成可执行的下一步。
+</p>
+
+<p align="center">
+  <a href="https://github.com/powerycy/goutoujunshi/stargazers"><img src="https://img.shields.io/github/stars/powerycy/goutoujunshi?style=social" alt="GitHub Stars"></a>
+  <a href="https://github.com/powerycy/goutoujunshi/actions/workflows/validate.yml"><img src="https://github.com/powerycy/goutoujunshi/actions/workflows/validate.yml/badge.svg" alt="Validate Skill"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
+<p align="center">
+  如果它能让你少一次内耗、多一次清醒，欢迎点亮一个 ⭐ <strong>Star</strong>：方便以后回来，也帮助更多有同样困惑的人发现它。
+</p>
+
+很多恋爱建议只有两个答案：“勇敢去追”或“赶紧分手”。狗头军师不会只凭一句话替你下结论：它先接住情绪，再把事实、推测和未知拆开；既看心动，也看现实条件、互惠、风险、机会成本和长期选择权，最后给出可以真正执行的下一步。
 
 它不只是一个话术库。它能读取聊天截图、导出文本和用户转述，区分素材来源与事实边界；也能把分析落到一句可发送的话、一次具体邀约、第一次见面安排或一段可复盘的对话演练。它是一套覆盖恋爱全周期、面向多元关系、能够解释建议理由的 Codex Skill。
 

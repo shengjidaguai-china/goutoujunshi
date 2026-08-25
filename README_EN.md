@@ -1,14 +1,41 @@
-# Goutoujunshi · AI Relationship Strategist
+<!-- README_SYNC: source=working-tree; updated=2026-08-25 -->
 
-[简体中文](README.md) | **English**
+<p align="center">
+  <a href="https://github.com/powerycy/shengjidaguai">
+    <img src="https://raw.githubusercontent.com/powerycy/shengjidaguai/main/assets/logo.png" width="160" alt="Shengji Daguai Open Source Community logo">
+  </a>
+</p>
 
-> Emotional support, relationship science, and practical strategy in an AI relationship adviser that genuinely takes the user's side.
+<p align="center">
+  Maintained by the <a href="https://github.com/powerycy/shengjidaguai"><strong>Shengji Daguai Open Source Community</strong></a>. Visit the community repository to connect, contribute, and build with us.
+</p>
 
-[![GitHub Stars](https://img.shields.io/github/stars/powerycy/goutoujunshi?style=social)](https://github.com/powerycy/goutoujunshi/stargazers)
+<p align="center">
+  <a href="./README.md">简体中文</a> · <strong>English</strong>
+</p>
 
-If Goutoujunshi helps you spend less time overthinking and make one more clear-headed decision in a relationship, please consider giving it a 🌟 **Star**. Your support helps more people find the project and keeps the knowledge base growing.
+<h1 align="center">Goutoujunshi · AI Relationship Strategist</h1>
 
-Most relationship advice offers only two answers: “Go for it” or “Break up.” Goutoujunshi tries to do better. It starts by acknowledging the user's emotions, then separates facts from assumptions and unknowns. It considers attraction alongside practical circumstances, reciprocity, risk, opportunity cost, and long-term options before turning the analysis into a concrete next step.
+<p align="center">
+  <strong>More than a reply generator: understand the relationship, read the situation, and decide what to do next.</strong>
+</p>
+
+<p align="center">
+  An AI relationship strategist for attraction, dating, conflict, breakups, and reconciliation.<br>
+  It combines emotional support, relationship science, chat analysis, and long-term memory to turn complicated situations into concrete next steps.
+</p>
+
+<p align="center">
+  <a href="https://github.com/powerycy/goutoujunshi/stargazers"><img src="https://img.shields.io/github/stars/powerycy/goutoujunshi?style=social" alt="GitHub Stars"></a>
+  <a href="https://github.com/powerycy/goutoujunshi/actions/workflows/validate.yml"><img src="https://github.com/powerycy/goutoujunshi/actions/workflows/validate.yml/badge.svg" alt="Validate Skill"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
+<p align="center">
+  If it helps you overthink less and make one clearer decision, give the project a ⭐ <strong>Star</strong> so you can find it again—and so others facing the same questions can discover it.
+</p>
+
+Most relationship advice offers only two answers: “Go for it” or “Break up.” Goutoujunshi does not rush to a conclusion from a single message. It starts by acknowledging the user's emotions, then separates facts from assumptions and unknowns. It considers attraction alongside practical circumstances, reciprocity, risk, opportunity cost, and long-term options before turning the analysis into a concrete next step.
 
 This is more than a library of scripted replies. It can analyze chat screenshots, exported text, and the user's account of events while preserving evidence boundaries. It can turn analysis into a message ready to send, a specific invitation, a first-date plan, or a conversation exercise that can be reviewed afterward. It is a Codex Skill for the full relationship lifecycle, designed for diverse relationships and capable of explaining the reasoning behind its advice.
 
