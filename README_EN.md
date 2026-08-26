@@ -1,13 +1,8 @@
-<!-- README_SYNC: source=working-tree; updated=2026-08-25 -->
+<!-- README_SYNC: source=working-tree; updated=2026-08-26 -->
 
 <p align="center">
-  <a href="https://github.com/powerycy/shengjidaguai">
-    <img src="https://raw.githubusercontent.com/powerycy/shengjidaguai/main/assets/logo.png" width="160" alt="Shengji Daguai Open Source Community logo">
-  </a>
-</p>
-
-<p align="center">
-  Maintained by the <a href="https://github.com/powerycy/shengjidaguai"><strong>Shengji Daguai Open Source Community</strong></a>. Visit the community repository to connect, contribute, and build with us.
+  A first-wave open co-building project from the <a href="https://github.com/shengjidaguai-china"><strong>Shengji Daguai Open Source Community</strong></a> ·
+  <a href="https://github.com/shengjidaguai-china"><strong>Follow the organization</strong></a> for new projects and community activities
 </p>
 
 <p align="center">

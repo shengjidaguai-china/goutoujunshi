@@ -1,13 +1,8 @@
-<!-- README_SYNC: source=working-tree; updated=2026-08-25 -->
+<!-- README_SYNC: source=working-tree; updated=2026-08-26 -->
 
 <p align="center">
-  <a href="https://github.com/powerycy/shengjidaguai">
-    <img src="https://raw.githubusercontent.com/powerycy/shengjidaguai/main/assets/logo.png" width="160" alt="升级打怪开源社区 Logo">
-  </a>
-</p>
-
-<p align="center">
-  本项目由 <a href="https://github.com/powerycy/shengjidaguai"><strong>升级打怪开源社区</strong></a> 维护。欢迎访问社区仓库，参与交流与共建。
+  <a href="https://github.com/shengjidaguai-china"><strong>升级打怪开源社区</strong></a> 首批开放共建项目 ·
+  <a href="https://github.com/shengjidaguai-china">点击组织首页右上角 <strong>Follow</strong></a>，及时获取新项目与共建活动
 </p>
 
 <p align="center">
