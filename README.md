@@ -1,4 +1,4 @@
-<!-- README_SYNC: source=working-tree; updated=2026-08-27 -->
+<!-- README_SYNC: source=working-tree; updated=2026-08-26 -->
 
 <p align="center">
   <a href="https://github.com/shengjidaguai-china"><strong>升级打怪开源社区</strong></a> 首批开放共建项目 ·
@@ -33,15 +33,6 @@
 很多恋爱建议只有两个答案：“勇敢去追”或“赶紧分手”。狗头军师不会只凭一句话替你下结论：它先接住情绪，再把事实、推测和未知拆开；既看心动，也看现实条件、互惠、风险、机会成本和长期选择权，最后给出可以真正执行的下一步。
 
 它不只是一个话术库。它能读取聊天截图、导出文本和用户转述，区分素材来源与事实边界；也能把分析落到一句可发送的话、一次具体邀约、第一次见面安排或一段可复盘的对话演练。它是一套覆盖恋爱全周期、面向多元关系、能够解释建议理由的 Codex Skill。
-
-## 版本与分支
-
-| 版本 | 定位 |
-| --- | --- |
-| [`main`](https://github.com/shengjidaguai-china/goutoujunshi) | 通用 Skill 版本，保持轻量、按需加载，便于在不同 AI 平台和客户端中安装、复用与传播 |
-| [`codex/deepseek-harness`](https://github.com/shengjidaguai-china/goutoujunshi/tree/codex/deepseek-harness) | DeepSeek Harness 独立版本，包含关系档案、关系 K 线、公开演示案例及参赛材料 |
-
-主干继续以通用 Skill 为核心；绑定特定运行环境的 DeepSeek Harness 实现放在独立分支维护，避免影响主干的跨平台通用性。对应实现记录见 [PR #23](https://github.com/shengjidaguai-china/goutoujunshi/pull/23)。
 
 ## 它能帮你解决什么
 

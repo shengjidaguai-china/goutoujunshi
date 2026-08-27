@@ -1,4 +1,4 @@
-<!-- README_SYNC: source=working-tree; updated=2026-08-27 -->
+<!-- README_SYNC: source=working-tree; updated=2026-08-26 -->
 
 <p align="center">
   A first-wave open co-building project from the <a href="https://github.com/shengjidaguai-china"><strong>Shengji Daguai Open Source Community</strong></a> ·
@@ -33,15 +33,6 @@
 Most relationship advice offers only two answers: “Go for it” or “Break up.” Goutoujunshi does not rush to a conclusion from a single message. It starts by acknowledging the user's emotions, then separates facts from assumptions and unknowns. It considers attraction alongside practical circumstances, reciprocity, risk, opportunity cost, and long-term options before turning the analysis into a concrete next step.
 
 This is more than a library of scripted replies. It can analyze chat screenshots, exported text, and the user's account of events while preserving evidence boundaries. It can turn analysis into a message ready to send, a specific invitation, a first-date plan, or a conversation exercise that can be reviewed afterward. It is a Codex Skill for the full relationship lifecycle, designed for diverse relationships and capable of explaining the reasoning behind its advice.
-
-## Versions and Branches
-
-| Version | Positioning |
-| --- | --- |
-| [`main`](https://github.com/shengjidaguai-china/goutoujunshi) | The portable Skill version: lightweight, loaded on demand, and easy to install, reuse, and distribute across AI platforms and clients |
-| [`codex/deepseek-harness`](https://github.com/shengjidaguai-china/goutoujunshi/tree/codex/deepseek-harness) | The standalone DeepSeek Harness edition with relationship profiles, a relationship candlestick view, a public demo case, and competition materials |
-
-The default branch remains the portable Skill. The runtime-specific DeepSeek Harness implementation is maintained separately so the main version stays platform-agnostic. See [PR #23](https://github.com/shengjidaguai-china/goutoujunshi/pull/23) for its implementation history.
 
 ## What It Can Help With
 
