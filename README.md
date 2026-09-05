@@ -21,8 +21,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/powerycy/goutoujunshi/stargazers"><img src="https://img.shields.io/github/stars/powerycy/goutoujunshi?style=social" alt="GitHub Stars"></a>
-  <a href="https://github.com/powerycy/goutoujunshi/actions/workflows/validate.yml"><img src="https://github.com/powerycy/goutoujunshi/actions/workflows/validate.yml/badge.svg" alt="Validate Skill"></a>
+  <a href="https://github.com/shengjidaguai-china/goutoujunshi/stargazers"><img src="https://img.shields.io/github/stars/shengjidaguai-china/goutoujunshi?style=social" alt="GitHub Stars"></a>
+  <a href="https://github.com/shengjidaguai-china/goutoujunshi/actions/workflows/validate.yml"><img src="https://github.com/shengjidaguai-china/goutoujunshi/actions/workflows/validate.yml/badge.svg" alt="Validate Skill"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
 
@@ -88,7 +88,7 @@
 将仓库克隆到 Codex 的 Skills 目录：
 
 ```bash
-git clone https://github.com/powerycy/goutoujunshi.git ~/.codex/skills/goutoujunshi
+git clone https://github.com/shengjidaguai-china/goutoujunshi.git ~/.codex/skills/goutoujunshi
 ```
 
 在 Codex 中输入：
@@ -120,6 +120,19 @@ ChatLab是可选依赖。安装并准备好用户自己取得的聊天导出文�
 
 狗头军师会先预览导入计划，再限定会话、对象和时间范围查询。它不会直接读取、解密或导出聊天软件数据库；没有ChatLab时仍可粘贴文字或上传截图分析。
 
+### 作为 Skill-only Plugin 安装
+
+仓库同时提供一个不连接 MCP 或外部 App 的 Skill-only Plugin。它与上面的根目录 Skill 内容保持同步，因此不会改变原有的 `$goutoujunshi` 使用方式。
+
+在支持导入 marketplace 的 ChatGPT 或 Codex 工作区中：
+
+1. 打开 **Workspace Settings → Plugins → Add → Import marketplace**。
+2. Source 填：`https://github.com/shengjidaguai-china/goutoujunshi`。
+3. Path 留空，Branch 填 `main`。
+4. 导入后，在对话中使用 `@狗头军师`，或通过 `+ → More` 选择它。
+
+仓库市场清单位于 `.agents/plugins/marketplace.json`，插件本体位于 `plugins/goutoujunshi/`。如果当前工作区没有开放 marketplace 入口，继续使用上面的 Skill 安装方式即可。
+
 ## 一个典型回答如何产生
 
 ```text
@@ -139,14 +152,20 @@ ChatLab是可选依赖。安装并准备好用户自己取得的聊天导出文�
 
 ```text
 goutoujunshi/
+├── .agents/plugins/marketplace.json # 仓库 marketplace 清单
 ├── SKILL.md                    # 核心行为与工作流
 ├── agents/openai.yaml         # Codex 展示与默认提示词
+├── plugins/goutoujunshi/       # Skill-only Plugin 包装层
+│   ├── .codex-plugin/plugin.json
+│   ├── assets/                 # 插件图标与 Logo
+│   └── skills/goutoujunshi/    # 与根 Skill 同步的运行内容
 ├── references/
 │   ├── knowledge/             # 关系科学与跨学科知识文档
 │   └── practical/             # 沟通、工具适配与记忆规则
 ├── documentation/             # 架构、流程与安全边界
 └── scripts/
     ├── validate_skill.py      # 项目完整性检查
+    ├── validate_plugin_package.py # 插件镜像一致性检查
     └── memory_store.py        # 同意门禁、限量记忆、撤销与删除
 ```
 

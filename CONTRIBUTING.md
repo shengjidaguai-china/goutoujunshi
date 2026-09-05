@@ -37,7 +37,7 @@
 
 1. Fork 仓库并创建主题分支。
 2. 只修改与本次贡献相关的文件。
-3. 运行 `python3 scripts/validate_skill.py`。
+3. 运行 `python3 scripts/validate_skill.py` 和 `python3 scripts/validate_plugin_package.py`。
 4. 在 Pull Request 中说明修改内容、原因、证据来源和用户影响。
 5. 若修改建议流程，至少提供一个成功场景和一个失败／边界场景。
 
