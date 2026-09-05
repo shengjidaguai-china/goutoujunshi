@@ -71,6 +71,18 @@ The project maintains relationship science, practical communication guidance, an
 
 The knowledge base distinguishes stronger research evidence from theoretical frameworks, popular claims, and experience-based tactics. MBTI, attachment styles, and online scripts can inform questions and generate options, but they are never presented as diagnoses, destiny, or guaranteed formulas.
 
+## References
+
+The knowledge base draws on **135 references** spanning relationship science, psychology and communication research, PUA and cold-reading risks, Chinese law and official safety guidance, books, theories, and public course materials. Sources are classified by evidence strength and usage boundaries; see the [core reading and paper index](./references/knowledge/19-核心书单与论文索引.md) for details.
+
+<p align="center">
+  <a href="./assets/reference-library-135.png">
+    <img src="./assets/reference-library-135.png" width="100%" alt="Overview of 135 references used by Goutoujunshi">
+  </a>
+</p>
+
+<p align="center"><sub>Click the image to view it at full size.</sub></p>
+
 ## Installation
 
 Clone the repository into your Codex Skills directory:
