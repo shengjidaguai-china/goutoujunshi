@@ -71,6 +71,18 @@
 
 知识库会区分较强研究证据、理论框架、流行说法和经验策略。MBTI、依恋类型和网络话术可以帮助提问和生成方案，但不会被包装成诊断、命运或“必胜公式”。
 
+## 参考资料
+
+知识库整理了关系科学、心理学与沟通研究、PUA 与冷读风险、中国法律和官方安全资料、书籍理论及公开课程等 **135 条参考资料**。资料按证据强度和使用边界分类，详见[核心书单与论文索引](./references/knowledge/19-核心书单与论文索引.md)。
+
+<p align="center">
+  <a href="./assets/reference-library-135.png">
+    <img src="./assets/reference-library-135.png" width="100%" alt="狗头军师 135 条参考资料总览">
+  </a>
+</p>
+
+<p align="center"><sub>点击图片查看完整尺寸</sub></p>
+
 ## 安装
 
 将仓库克隆到 Codex 的 Skills 目录：
