@@ -17,3 +17,5 @@ jobs:
           python-version: "3.12"
       - name: Validate repository and skill
         run: python3 scripts/validate_skill.py
+      - name: Validate Skill-only Plugin mirror
+        run: python3 scripts/validate_plugin_package.py

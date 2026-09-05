@@ -1,0 +1,36 @@
+{
+  "name": "goutoujunshi",
+  "version": "1.0.0",
+  "description": "AI 恋爱军师：分析关系、判断局势并给出下一步行动建议。",
+  "author": {
+    "name": "升级打怪开源社区",
+    "url": "https://github.com/shengjidaguai-china"
+  },
+  "homepage": "https://github.com/shengjidaguai-china/goutoujunshi",
+  "repository": "https://github.com/shengjidaguai-china/goutoujunshi",
+  "license": "MIT",
+  "keywords": [
+    "relationship",
+    "dating",
+    "恋爱",
+    "关系分析",
+    "沟通"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "狗头军师",
+    "shortDescription": "看清关系，判断局势，决定下一步",
+    "longDescription": "面向心动、暧昧、追求、冲突、分手与复合的 AI 恋爱军师，结合关系分析、聊天记录、互惠判断和行动策略给出明确下一步。",
+    "developerName": "升级打怪开源社区",
+    "category": "Lifestyle",
+    "capabilities": [],
+    "defaultPrompt": [
+      "帮我分析一下我和她现在的关系。",
+      "这句话我应该怎么回？",
+      "根据聊天记录判断我下一步应该怎么做。"
+    ],
+    "brandColor": "#C2410C",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png"
+  }
+}

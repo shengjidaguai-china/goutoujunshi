@@ -21,8 +21,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/powerycy/goutoujunshi/stargazers"><img src="https://img.shields.io/github/stars/powerycy/goutoujunshi?style=social" alt="GitHub Stars"></a>
-  <a href="https://github.com/powerycy/goutoujunshi/actions/workflows/validate.yml"><img src="https://github.com/powerycy/goutoujunshi/actions/workflows/validate.yml/badge.svg" alt="Validate Skill"></a>
+  <a href="https://github.com/shengjidaguai-china/goutoujunshi/stargazers"><img src="https://img.shields.io/github/stars/shengjidaguai-china/goutoujunshi?style=social" alt="GitHub Stars"></a>
+  <a href="https://github.com/shengjidaguai-china/goutoujunshi/actions/workflows/validate.yml"><img src="https://github.com/shengjidaguai-china/goutoujunshi/actions/workflows/validate.yml/badge.svg" alt="Validate Skill"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
 
@@ -88,7 +88,7 @@ The knowledge base draws on **135 references** spanning relationship science, ps
 Clone the repository into your Codex Skills directory:
 
 ```bash
-git clone https://github.com/powerycy/goutoujunshi.git ~/.codex/skills/goutoujunshi
+git clone https://github.com/shengjidaguai-china/goutoujunshi.git ~/.codex/skills/goutoujunshi
 ```
 
 Then enter this in Codex:
@@ -120,6 +120,19 @@ Use $goutoujunshi with ChatLab to analyze the last three months of chats between
 
 Goutoujunshi first previews the import plan, then limits queries by conversation, participant, and time range. It does not directly read, decrypt, or export databases from messaging apps. Without ChatLab, you can still paste text or upload screenshots for analysis.
 
+### Install as a Skill-only Plugin
+
+The repository also provides a Skill-only Plugin that connects to no MCP server or external App. It keeps the plugin's Skill content synchronized with the root Skill, so the existing `$goutoujunshi` usage remains available.
+
+In a ChatGPT or Codex workspace that supports marketplace imports:
+
+1. Open **Workspace Settings → Plugins → Add → Import marketplace**.
+2. Set Source to `https://github.com/shengjidaguai-china/goutoujunshi`.
+3. Leave Path blank and set Branch to `main`.
+4. After importing, use `@狗头军师` in a conversation, or select it through `+ → More`.
+
+The repository marketplace manifest is `.agents/plugins/marketplace.json`, and the plugin package is `plugins/goutoujunshi/`. If marketplace import is not available in your workspace, continue using the Skill installation above.
+
 ## How a Typical Answer Is Produced
 
 ```text
@@ -139,14 +152,20 @@ Long-term memory and ChatLab are used only when the user consents or supplies th
 
 ```text
 goutoujunshi/
+├── .agents/plugins/marketplace.json # Repository marketplace manifest
 ├── SKILL.md                    # Core behavior and workflow
 ├── agents/openai.yaml         # Codex display metadata and default prompt
+├── plugins/goutoujunshi/       # Skill-only Plugin wrapper
+│   ├── .codex-plugin/plugin.json
+│   ├── assets/                 # Plugin icon and logo
+│   └── skills/goutoujunshi/    # Synchronized Skill runtime
 ├── references/
 │   ├── knowledge/             # Relationship science and interdisciplinary knowledge
 │   └── practical/             # Communication, tool integration, and memory rules
 ├── documentation/             # Architecture, workflows, and safety boundaries
 └── scripts/
     ├── validate_skill.py      # Project integrity checks
+    ├── validate_plugin_package.py # Plugin mirror consistency check
     └── memory_store.py        # Consent gate, bounded memory, revocation, and deletion
 ```
 

@@ -1,0 +1,20 @@
+{
+  "name": "shengjidaguai",
+  "interface": {
+    "displayName": "升级打怪 Skills"
+  },
+  "plugins": [
+    {
+      "name": "goutoujunshi",
+      "source": {
+        "source": "local",
+        "path": "./plugins/goutoujunshi"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Lifestyle"
+    }
+  ]
+}
