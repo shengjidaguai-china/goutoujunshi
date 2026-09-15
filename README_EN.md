@@ -78,16 +78,16 @@ The knowledge base distinguishes stronger research evidence from theoretical fra
 
 ## Installation
 
-Clone the repository into your Codex Skills directory:
-
-```bash
-git clone https://github.com/powerycy/goutoujunshi.git ~/.codex/skills/goutoujunshi
-```
-
-Then enter this in Codex:
+Send the following installation prompt to your AI assistant:
 
 ```text
-Use $goutoujunshi to help me process my emotions, assess my current relationship, and decide what to do next.
+Please download the public repository https://github.com/shengjidaguai-china/goutoujunshi and install it as a local Skill.
+```
+
+After installation, you can enter:
+
+```text
+Use Goutoujunshi to help me process my emotions, assess my current relationship, and decide what to do next.
 ```
 
 On first use, it will ask for:
@@ -108,7 +108,7 @@ You can leave unknown fields blank or simply tell the story. The Skill will orga
 ChatLab is an optional dependency. After installing it and preparing chat exports that you obtained yourself, you can say:
 
 ```text
-Use $goutoujunshi with ChatLab to analyze the last three months of chats between me and Person A.
+Use Goutoujunshi with ChatLab to analyze the last three months of chats between me and Person A.
 ```
 
 Goutoujunshi first previews the import plan, then limits queries by conversation, participant, and time range. It does not directly read, decrypt, or export databases from messaging apps. Without ChatLab, you can still paste text or upload screenshots for analysis.

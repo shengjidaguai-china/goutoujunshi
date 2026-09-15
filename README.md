@@ -78,16 +78,16 @@
 
 ## 安装
 
-将仓库克隆到 Codex 的 Skills 目录：
-
-```bash
-git clone https://github.com/powerycy/goutoujunshi.git ~/.codex/skills/goutoujunshi
-```
-
-在 Codex 中输入：
+将下面的安装口令发送给你使用的 AI 助手：
 
 ```text
-使用 $goutoujunshi 帮我梳理情绪、分析当前关系，并给出下一步建议。
+请将公开仓库 https://github.com/shengjidaguai-china/goutoujunshi 下载并安装为本地 Skill。
+```
+
+安装完成后，可以输入：
+
+```text
+请使用狗头军师帮我梳理情绪、分析当前关系，并给出下一步建议。
 ```
 
 首次使用时，它会询问：
@@ -108,7 +108,7 @@ git clone https://github.com/powerycy/goutoujunshi.git ~/.codex/skills/goutoujun
 ChatLab是可选依赖。安装并准备好用户自己取得的聊天导出文件后，可以直接说：
 
 ```text
-使用 $goutoujunshi 通过 ChatLab 分析我和对象A最近三个月的聊天。
+请使用狗头军师通过 ChatLab 分析我和对象A最近三个月的聊天。
 ```
 
 狗头军师会先预览导入计划，再限定会话、对象和时间范围查询。它不会直接读取、解密或导出聊天软件数据库；没有ChatLab时仍可粘贴文字或上传截图分析。
