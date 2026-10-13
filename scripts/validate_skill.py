@@ -37,10 +37,30 @@ REQUIRED_PRACTICAL = (
     "公开表达案例的伦理转译.md",
 )
 
-def require(path: str) -> Path:
+MIN_REQUIRED_BYTES = 200
+
+
+def read_utf8(path: Path) -> str:
+    """Read UTF-8 text, tolerating a BOM and reporting decode failures as errors."""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError as exc:
+        ERRORS.append(f"not valid UTF-8: {path.relative_to(ROOT)} ({exc})")
+        return ""
+    # Windows 编辑器常写入 BOM；不剥掉会让 frontmatter 的 ^--- 匹配失败，误报格式错误。
+    return text[1:] if text.startswith("\ufeff") else text
+
+
+def require(path: str, min_bytes: int = MIN_REQUIRED_BYTES) -> Path:
     target = ROOT / path
     if not target.exists():
         ERRORS.append(f"missing required path: {path}")
+    elif target.is_file() and target.stat().st_size < min_bytes:
+        # 只判 exists() 时，把必读文件清成空壳仍会输出 validation passed。
+        ERRORS.append(
+            f"required file is effectively empty: {path} "
+            f"({target.stat().st_size} bytes < {min_bytes})"
+        )
     return target
 
 
@@ -49,7 +69,7 @@ def validate_frontmatter() -> None:
     if not skill.is_file():
         return
 
-    content = skill.read_text(encoding="utf-8")
+    content = read_utf8(skill)
     match = re.match(r"^---\n(.*?)\n---\n", content, re.DOTALL)
     if not match:
         ERRORS.append("SKILL.md has invalid YAML frontmatter boundaries")
@@ -83,7 +103,7 @@ def validate_skill_budget() -> None:
     if not skill.is_file():
         return
 
-    content = skill.read_text(encoding="utf-8")
+    content = read_utf8(skill)
     lines = len(content.splitlines())
     characters = len(content)
     approx_tokens = approximate_token_count(content)
@@ -111,14 +131,56 @@ def validate_inventory(runtime_only: bool) -> None:
     for filename in REQUIRED_PRACTICAL:
         require(f"references/practical/{filename}")
     agent = ROOT / "agents/openai.yaml"
-    if agent.is_file() and "$goutoujunshi" not in agent.read_text(encoding="utf-8"):
+    if agent.is_file() and "$goutoujunshi" not in read_utf8(agent):
         ERRORS.append("agents/openai.yaml default prompt must mention $goutoujunshi")
+    validate_reference_library()
+
+
+def validate_reference_library() -> None:
+    """Catch whole-file deletion, not just damage to the hand-picked allowlist.
+
+    REQUIRED_KNOWLEDGE 只点名 6 个、REQUIRED_PRACTICAL 只点名 9 个，而实际各有 20 和 23 个文件，
+    因此删掉一个没被点名的参考文件时旧校验器仍然通过。这里改为按目录整体核对：
+    数量下限 + 编号连续性（knowledge 的 NN- 前缀）+ 每个文件都必须有正文。
+    """
+    knowledge_dir = ROOT / "references" / "knowledge"
+    practical_dir = ROOT / "references" / "practical"
+    knowledge = sorted(knowledge_dir.glob("*.md")) if knowledge_dir.is_dir() else []
+    practical = sorted(practical_dir.glob("*.md")) if practical_dir.is_dir() else []
+    if len(knowledge) < 20:
+        ERRORS.append(
+            f"references/knowledge must ship at least 20 markdown files, found {len(knowledge)}"
+        )
+    if len(practical) < 23:
+        ERRORS.append(
+            f"references/practical must ship at least 23 markdown files, found {len(practical)}"
+        )
+    numbers = []
+    for path in knowledge:
+        prefix = path.name.split("-", 1)[0]
+        if not re.fullmatch(r"\d{2}", prefix):
+            ERRORS.append(
+                f"knowledge file must start with a two-digit number: {path.name}"
+            )
+            continue
+        numbers.append(prefix)
+    if numbers != [f"{index:02d}" for index in range(1, len(numbers) + 1)]:
+        ERRORS.append(
+            "knowledge numbering must run 01..N without gaps or duplicates: "
+            f"{', '.join(numbers)}"
+        )
+    for path in knowledge + practical:
+        if path.stat().st_size < MIN_REQUIRED_BYTES:
+            ERRORS.append(
+                "reference file is effectively empty: "
+                f"{path.relative_to(ROOT)} ({path.stat().st_size} bytes)"
+            )
 
 
 def validate_routes_and_regressions(runtime_only: bool) -> None:
     skill = ROOT / "SKILL.md"
     if skill.is_file():
-        content = skill.read_text(encoding="utf-8")
+        content = read_utf8(skill)
         required_routes = (
             "references/knowledge/20-经典社交体系的机制、证据与风险边界.md",
             "references/practical/自然流、内在状态与结构化互动：伦理能力转译.md",
@@ -155,6 +217,37 @@ def validate_routes_and_regressions(runtime_only: bool) -> None:
             if marker not in content:
                 ERRORS.append(f"SKILL.md missing required behavior boundary: {marker}")
 
+RUNTIME_ROOTS = (
+    ROOT / "SKILL.md",
+    ROOT / "agents",
+    ROOT / "references",
+    ROOT / "scripts",
+    ROOT / "assets",
+)
+
+
+def runtime_files() -> list[Path]:
+    """Yield every file inside the runtime allowlist, skipping dependency trees.
+
+    SKILL.md/agents/references/scripts/assets 才是随技能分发的运行时内容。仓库里现在还有
+    competition/ 这类开发目录，它们的 node_modules 里塞满了第三方 markdown（链接指向上游仓库
+    里并不存在的路径），如果 rglob 扫全仓，链接检查会在别人的依赖包里报一堆假错误。
+    """
+    files: list[Path] = []
+    for runtime_root in RUNTIME_ROOTS:
+        if not runtime_root.exists():
+            continue
+        if runtime_root.is_file():
+            files.append(runtime_root)
+            continue
+        files.extend(
+            path
+            for path in runtime_root.rglob("*")
+            if path.is_file() and "node_modules" not in path.parts
+        )
+    return files
+
+
 def validate_runtime_boundaries() -> None:
     if (ROOT / ".git").exists():
         tracked_research = subprocess.run(
@@ -169,13 +262,7 @@ def validate_runtime_boundaries() -> None:
                 f"raw research must remain untracked and outside runtime content: {path}"
             )
 
-    runtime_roots = (
-        ROOT / "SKILL.md",
-        ROOT / "agents",
-        ROOT / "references",
-        ROOT / "scripts",
-        ROOT / "assets",
-    )
+    runtime_roots = RUNTIME_ROOTS
     forbidden_parts = {"research", "documentation", ".git", "__pycache__"}
     for runtime_root in runtime_roots:
         if not runtime_root.exists():
@@ -195,8 +282,10 @@ def validate_runtime_boundaries() -> None:
 
 def validate_markdown_links() -> None:
     link_pattern = re.compile(r"\]\(([^)]+)\)")
-    for markdown in ROOT.rglob("*.md"):
-        text = markdown.read_text(encoding="utf-8")
+    for markdown in runtime_files():
+        if markdown.suffix.lower() != ".md":
+            continue
+        text = read_utf8(markdown)
         for raw_target in link_pattern.findall(text):
             target = raw_target.strip().split("#", 1)[0]
             if not target or re.match(r"^(?:https?://|mailto:)", target):
@@ -209,12 +298,10 @@ def validate_markdown_links() -> None:
 
 
 def validate_placeholders() -> None:
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or ".git" in path.parts:
-            continue
+    for path in runtime_files():
         if path.suffix.lower() not in {".md", ".yaml", ".yml", ".py"}:
             continue
-        text = path.read_text(encoding="utf-8")
+        text = read_utf8(path)
         if "[" + "TODO" in text:
             ERRORS.append(f"template placeholder in {path.relative_to(ROOT)}")
 

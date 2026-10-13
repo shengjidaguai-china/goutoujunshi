@@ -64,6 +64,25 @@ def db_path() -> Path:
     return memory_dir() / "memory.sqlite3"
 
 
+def ensure_stdio_utf8() -> None:
+    """Force UTF-8 on stdin/stdout.
+
+    Windows 上 Python 默认使用系统区域编码（简体中文环境是 cp936/gbk）。JSON 的字节流按约定是
+    UTF-8，因此宿主（例如 DSH 插件适配器）通过管道喂进来的中文 JSON 会被按 gbk 解码，产生
+    孤立代理字符（surrogates），随后 sqlite 绑定这些字符串时报
+    `UnicodeEncodeError: 'utf-8' codec can't encode character '\\udcae' ... surrogates not allowed`。
+    反过来，stdout 用 gbk 输出也会让宿主读到的 JSON 乱码或解析失败。
+    """
+    for stream in (sys.stdin, sys.stdout):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is None:
+            continue
+        try:
+            reconfigure(encoding="utf-8")
+        except (OSError, ValueError):
+            pass
+
+
 def emit(payload: dict[str, Any]) -> None:
     print(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
 
@@ -146,6 +165,11 @@ def row_dict(row: sqlite3.Row) -> dict[str, Any]:
     return {key: row[key] for key in row.keys()}
 
 
+def same_occurred_at(left: Any, right: Any) -> bool:
+    """把空日期与 NULL 视为同一个值，避免 SQL 的 NULL 等值比较把它们折叠成同一行。"""
+    return (left or None) == (right or None)
+
+
 def validate_text(name: str, value: Any, maximum: int, required: bool = True) -> str:
     if value is None:
         value = ""
@@ -224,7 +248,12 @@ def prune_operation_history(conn: sqlite3.Connection) -> None:
     )
 
 
-def prune_rows(conn: sqlite3.Connection, delta: dict[str, Any]) -> list[dict[str, Any]]:
+def prune_rows(
+    conn: sqlite3.Connection,
+    delta: dict[str, Any],
+    keep_id: str = "",
+    is_new_field: bool = True,
+) -> list[dict[str, Any]]:
     removed: list[dict[str, Any]] = []
     scope = delta["scope"]
     subject_id = delta["subject_id"]
@@ -233,7 +262,14 @@ def prune_rows(conn: sqlite3.Connection, delta: dict[str, Any]) -> list[dict[str
         "WHERE scope = ? AND subject_id = ? AND status = 'active'",
         (scope, subject_id),
     ).fetchone()["n"]
-    if scope in {"user", "object", "relationship"} and scope_count > SCOPE_LIMITS[scope]:
+    # scope_count 已包含本次写入的那一行，所以真正可以占位的既有行数是 scope_count - 1。
+    # 只有在新增字段（is_new_field）时才需要判上限：更新既有字段不增加行数，必须永远允许，
+    # 否则一旦档案因 undo 恢复而超限，用户就再也改不动自己的字段了。
+    if (
+        scope in {"user", "object", "relationship"}
+        and is_new_field
+        and scope_count - 1 >= SCOPE_LIMITS[scope]
+    ):
         raise MemoryErrorWithCode(
             "MEMORY_LIMIT_REACHED",
             f"{scope} 档案已达 {SCOPE_LIMITS[scope]} 条上限，请先合并或删除旧字段",
@@ -243,8 +279,8 @@ def prune_rows(conn: sqlite3.Connection, delta: dict[str, Any]) -> list[dict[str
         if excess > 0:
             rows = conn.execute(
                 "SELECT * FROM memories WHERE scope = ? AND subject_id = ? "
-                "AND status = 'active' ORDER BY updated_at ASC LIMIT ?",
-                (scope, subject_id, excess),
+                "AND status = 'active' AND id != ? ORDER BY updated_at ASC LIMIT ?",
+                (scope, subject_id, keep_id, excess),
             ).fetchall()
             for row in rows:
                 removed.append(row_dict(row))
@@ -255,8 +291,8 @@ def prune_rows(conn: sqlite3.Connection, delta: dict[str, Any]) -> list[dict[str
     if excess_total > 0:
         rows = conn.execute(
             "SELECT * FROM memories WHERE scope IN ('event', 'hypothesis') "
-            "ORDER BY updated_at ASC LIMIT ?",
-            (excess_total,),
+            "AND id != ? ORDER BY updated_at ASC LIMIT ?",
+            (keep_id, excess_total),
         ).fetchall()
         for row in rows:
             if not any(item["id"] == row["id"] for item in removed):
@@ -348,12 +384,17 @@ def command_apply(args: argparse.Namespace) -> None:
         before: list[dict[str, Any]] = []
         was_update = False
         if delta["scope"] == "event":
-            existing_rows = conn.execute(
+            candidate_rows = conn.execute(
                 "SELECT * FROM memories WHERE scope = 'event' AND subject_id = ? "
-                "AND field = ? AND occurred_at IS ? AND status = 'active' "
+                "AND field = ? AND status = 'active' "
                 "ORDER BY updated_at DESC, rowid DESC",
-                (delta["subject_id"], delta["field"], delta["occurred_at"]),
+                (delta["subject_id"], delta["field"]),
             ).fetchall()
+            existing_rows = [
+                row
+                for row in candidate_rows
+                if same_occurred_at(row["occurred_at"], delta["occurred_at"])
+            ]
             existing = existing_rows[0] if existing_rows else None
             if existing_rows:
                 before.extend(row_dict(row) for row in existing_rows)
@@ -402,7 +443,9 @@ def command_apply(args: argparse.Namespace) -> None:
             """,
             row,
         )
-        before.extend(prune_rows(conn, delta))
+        before.extend(
+            prune_rows(conn, delta, keep_id=memory_id, is_new_field=not was_update)
+        )
         op_id = uuid.uuid4().hex
         conn.execute(
             "INSERT INTO operations(op_id, created_at, action, before_json, after_json) "
@@ -483,6 +526,7 @@ def list_memories(conn: sqlite3.Connection, subject_id: str | None) -> list[dict
 
 def command_show(args: argparse.Namespace) -> None:
     with connect() as conn:
+        require_enabled(conn)
         rows = list_memories(conn, args.subject_id)
     emit({"count": len(rows), "memories": rows})
 
@@ -608,13 +652,23 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> int:
+    ensure_stdio_utf8()
     try:
         args = build_parser().parse_args()
         args.func(args)
         return 0
-    except (MemoryErrorWithCode, json.JSONDecodeError, OSError, sqlite3.Error) as exc:
+    except (
+        MemoryErrorWithCode,
+        json.JSONDecodeError,
+        OSError,
+        sqlite3.Error,
+        UnicodeError,
+    ) as exc:
         code = exc.code if isinstance(exc, MemoryErrorWithCode) else exc.__class__.__name__.upper()
-        emit({"ok": False, "error": {"code": code, "message": str(exc)}})
+        try:
+            emit({"ok": False, "error": {"code": code, "message": str(exc)}})
+        except UnicodeError:
+            emit({"ok": False, "error": {"code": code, "message": "编码错误"}})
         return 1
 
 
