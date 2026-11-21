@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="./README.md">简体中文</a> · <strong>English</strong>
+  <a href="./README.md">简体中文</a> · <strong>English</strong> · <a href="./README_JA.md">日本語</a>
 </p>
 
 <h1 align="center">Goutoujunshi · AI Relationship Strategist</h1>
